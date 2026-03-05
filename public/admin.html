@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<link rel="stylesheet" href="/css/styles.css">
+<script src="/js/admin-panel.js" defer></script>
+</head>
+
+<body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      QIU Lost & Found <span class="badge">Admin</span>
+    </div>
+
+    <div class="nav-links">
+      <a class="btn" href="/index.html">Home</a>
+      <a class="btn" href="/lost.html">Lost</a>
+      <a class="btn" href="/found.html">Found</a>
+      <a class="btn" href="/admin-login.html">Logout</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+
+  <div class="hero">
+    <h1 class="h-title">Admin Panel</h1>
+    <p class="h-sub">Manage Lost & Found reports (Update status / Delete).</p>
+  </div>
+
+
+  <div class="grid">
+
+    <div class="card full">
+
+      <div class="filters">
+
+        <div class="row">
+
+          <div>
+            <label>Status Filter</label>
+            <select id="statusFilter">
+              <option value="">All</option>
+              <option value="active">Active</option>
+              <option value="claimed">Claimed</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+
+
+          <div>
+            <label>Category Filter</label>
+            <select id="categoryFilter">
+              <option value="">All</option>
+              <option value="lost">Lost</option>
+              <option value="found">Found</option>
+            </select>
+          </div>
+
+
+          <div style="display:flex; align-items:end;">
+            <button class="btn primary" id="refreshBtn">
+              Refresh
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="table-wrap">
+
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Item</th>
+              <th>Location</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Contact</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="adminItemsTable">
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

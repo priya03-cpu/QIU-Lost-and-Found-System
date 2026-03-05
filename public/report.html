@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Report - QIU Lost & Found</title>
+
+  <!-- ✅ correct CSS path (you are using style.css in your project) -->
+  <link rel="stylesheet" href="/css/styles.css" />
+
+  <!-- ✅ ensure JS loads -->
+  <script src="/js/report.js" defer></script>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">QIU Lost & Found <span class="badge">Report</span></div>
+      <div class="nav-links">
+        <a class="btn" href="/index.html">Home</a>
+        <a class="btn" href="/lost.html">View Lost</a>
+        <a class="btn" href="/found.html">View Found</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1 class="h-title">Report an Item</h1>
+      <p class="h-sub">All fields are required.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card full">
+        <form class="form" id="reportForm">
+
+          <div class="row">
+            <div>
+              <label for="category">Type *</label>
+              <select id="category" required>
+                <option value="">Select…</option>
+                <option value="lost">Lost</option>
+                <option value="found">Found</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="title">Item Name *</label>
+              <input id="title" placeholder="e.g., Wallet / Student ID / Phone" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="location">Location *</label>
+              <input id="location" placeholder="e.g., Library Level 2" required />
+            </div>
+
+            <div>
+              <label for="date">Date *</label>
+             <input id="date" type="date" required />
+            </div>
+          </div>
+
+          <div>
+            <label for="description">Description *</label>
+            <textarea id="description" placeholder="Color, brand, unique marks…" required></textarea>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="contact_name">Contact Name *</label>
+              <input id="contact_name" placeholder="Your name" required />
+            </div>
+            <div>
+              <label for="contact_phone">Contact Phone *</label>
+              <input id="contact_phone" placeholder="e.g., 01X-XXXXXXX" required />
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px">
+            <button class="btn primary" type="submit">Submit Report</button>
+            <a class="btn" href="/index.html">Cancel</a>
+          </div>
+
+          <small id="msg" style="display:block; margin-top:10px;"></small>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+const today = new Date().toISOString().split("T")[0];
+document.getElementById("date").setAttribute("max", today);
+</script>
+</body>
+</html>

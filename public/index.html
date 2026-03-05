@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>QIU Lost & Found</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="nav">
+    <div class="nav-inner">
+
+      <div class="brand">
+        QIU Lost & Found <span class="badge">v1</span>
+      </div>
+
+      <div class="nav-links">
+        <a class="btn" href="/report.html">Report Item</a>
+        <a class="btn" href="/lost.html">View Lost</a>
+        <a class="btn" href="/found.html">View Found</a>
+        <a class="btn primary" href="/admin-login.html">Admin Panel</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+      <h1 class="h-title">QIU Campus Lost & Found System</h1>
+
+      <p class="h-sub">
+        Centralized reporting and tracking for items lost or found on campus.
+      </p>
+
+      <div class="kpi">
+        <span class="pill ok">Frontend: Serving ✅</span>
+        <span class="pill">Backend: Running</span>
+        <span class="pill">Database: Connected</span>
+      </div>
+    </div>
+
+
+    <!-- MAIN CARDS -->
+    <div class="grid">
+
+      <!-- REPORT ITEM -->
+      <div class="card">
+        <h3>Report an Item</h3>
+
+        <p>
+          Lost something? Found something? Submit it quickly with item details
+          and location.
+        </p>
+
+        <div style="margin-top:12px">
+          <a class="btn primary" href="/report.html">Go to Report Form</a>
+        </div>
+      </div>
+
+
+      <!-- VIEW ITEMS -->
+      <div class="card">
+        <h3>Browse Listings</h3>
+
+        <p>
+          See all lost and found items reported on campus. Click an item
+          to view details.
+        </p>
+
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn" href="/lost.html">View Lost</a>
+          <a class="btn" href="/found.html">View Found</a>
+        </div>
+      </div>
+
+
+      <!-- ADMIN PANEL -->
+      <div class="card full">
+        <h3>Admin Panel</h3>
+
+        <p>
+          Admins can update item status (Active → Claimed / Resolved) and
+          manage reports.
+        </p>
+
+        <div style="margin-top:12px">
+          <a class="btn" href="/admin-login.html">Login as Admin</a>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="footer">
+      © QIU Lost & Found • Built with Node.js + MySQL
+    </div>
+
+  </div>
+
+</body>
+</html>

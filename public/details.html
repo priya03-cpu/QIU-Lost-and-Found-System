@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Item Details - QIU Lost & Found</title>
+
+  <link rel="stylesheet" href="/css/styles.css" />
+  <script src="/js/detail.js" defer></script>
+
+  <style>
+    .detail-grid{ display:grid; grid-template-columns: 1.2fr 0.8fr; gap:18px; }
+    @media (max-width: 900px){ .detail-grid{ grid-template-columns: 1fr; } }
+
+    .kv{ display:grid; grid-template-columns: 160px 1fr; gap:10px 14px; margin-top:10px; }
+    .kv .k{ opacity:.8; }
+    .kv .v{ font-weight:600; }
+
+    .desc{
+      white-space: pre-wrap;
+      line-height: 1.6;
+      margin-top:10px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .danger{ border:1px solid rgba(255,120,120,.35) !important; background: rgba(255,90,90,.12) !important; }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">QIU Lost & Found <span class="badge">Details</span></div>
+      <div class="nav-links">
+        <a class="btn" href="/index.html">Home</a>
+        <a class="btn" href="/lost.html">Lost</a>
+        <a class="btn" href="/found.html">Found</a>
+        <a class="btn" href="/admin.html">Admin</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1 class="h-title">Item Details</h1>
+      <p class="h-sub">View full information, update status, or delete a report.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card full">
+        <div class="detail-grid">
+
+          <!-- LEFT -->
+          <div>
+            <h2 id="dTitle" style="margin:0 0 6px 0;">Loading…</h2>
+
+            <div class="kpi" style="margin-top:10px;">
+              <span class="pill" id="dTypePill">Type: -</span>
+              <span class="pill" id="dStatusPill">Status: -</span>
+            </div>
+
+            <div class="kv">
+              <div class="k">Location</div><div class="v" id="dLocation">-</div>
+              <div class="k">Date</div><div class="v" id="dDate">-</div>
+              <div class="k">Contact</div><div class="v" id="dContact">-</div>
+            </div>
+
+            <h3 style="margin-top:18px;">Description</h3>
+            <div class="desc" id="dDescription">-</div>
+          </div>
+
+          <!-- RIGHT -->
+          <div>
+            <h3 style="margin-top:0;">Actions</h3>
+            <p style="opacity:.85; margin-top:6px;">
+              Admin can update the status or delete this report.
+            </p>
+
+            <div class="actions">
+              <button class="btn" id="btnActive" type="button">Mark Active</button>
+              <button class="btn" id="btnClaimed" type="button">Mark Claimed</button>
+              <button class="btn" id="btnResolved" type="button">Mark Resolved</button>
+            </div>
+
+            <div class="actions">
+              <button class="btn danger" id="btnDelete" type="button">Delete Report</button>
+
+              <!-- ✅ REAL BACK BUTTON (we will set its link in JS) -->
+              <a class="btn" id="backBtn" href="/index.html">Back</a>
+            </div>
+
+            <small id="msg" style="display:block; margin-top:10px;"></small>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">Tip: Use “Back” to return to the list quickly.</div>
+  </div>
+</body>
+</html>
