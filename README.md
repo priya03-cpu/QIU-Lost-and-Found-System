@@ -2,6 +2,8 @@
 
 A web-based Lost & Found Management System for Quest International University.
 
+Update project documentation
+
 ## Features
 - Submit Lost item report
 - Submit Found item report
