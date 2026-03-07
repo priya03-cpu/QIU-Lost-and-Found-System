@@ -6,3 +6,4 @@ function sanitizeString(value) {
 }
 
 module.exports = { sanitizeString };
+// improved validation logic

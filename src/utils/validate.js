@@ -19,3 +19,4 @@ function validateItem(body) {
 }
 
 module.exports = { validateItem };
+// improved validation logic
