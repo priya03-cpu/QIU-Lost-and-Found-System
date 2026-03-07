@@ -1,146 +1,124 @@
-// src/controllers/items.controller.js
-const db = require("../db");
+const db = require("../database/db");
 
-const clean = (v) => String(v ?? "").trim();
-
-exports.createItem = async (req, res) => {
+// Create item
+exports.createItem = (req, res) => {
   try {
-    const title = clean(req.body.title);
-    const description = clean(req.body.description);
-    const category = clean(req.body.category).toLowerCase();
-    const location = clean(req.body.location);
-    const date = clean(req.body.date); // expected YYYY-MM-DD
-    const contact = clean(req.body.contact);
-    const status = clean(req.body.status) || "Active";
+    const { title, description, category, location, date, contact } = req.body;
 
-    // Required fields
     if (!title || !description || !category || !location || !date || !contact) {
-      return res.status(400).json({
-        message:
-          "All fields are required: title, description, category, location, date, contact.",
-      });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Category validation
-    if (!(category === "lost" || category === "found")) {
-      return res.status(400).json({ message: "Category must be lost or found." });
-    }
-
-    // ✅ Date validation (no future dates + basic format check)
-    // Works because 'YYYY-MM-DD' compares correctly as strings.
-    const today = new Date().toISOString().split("T")[0];
-
-    // Basic YYYY-MM-DD format check
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      return res.status(400).json({ message: "Invalid date format. Use YYYY-MM-DD." });
-    }
-
-    // Future date block
-    if (date > today) {
-      return res.status(400).json({ message: "Date cannot be in the future." });
-    }
-
-    const sql = `
-      INSERT INTO items (title, description, category, location, \`date\`, contact, status)
+    const stmt = db.prepare(`
+      INSERT INTO items (title, description, category, location, date, contact, status)
       VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
+    `);
 
-    const params = [title, description, category, location, date, contact, status];
-    const [result] = await db.query(sql, params);
+    const result = stmt.run(
+      title,
+      description,
+      category,
+      location,
+      date,
+      contact,
+      "Active"
+    );
 
-    return res.status(201).json({ message: "Created ✅", id: result.insertId });
-  } catch (err) {
-    console.error("❌ createItem error:", err);
-    return res.status(500).json({ message: "Server error" });
+    res.status(201).json({
+      success: true,
+      id: result.lastInsertRowid,
+      message: "Item reported successfully ✅",
+    });
+  } catch (error) {
+    console.error("createItem error:", error);
+    res.status(500).json({ message: "Server error while creating item" });
   }
 };
 
-exports.getItems = async (req, res) => {
+// Get all items
+exports.getItems = (req, res) => {
   try {
-    const category = clean(req.query.category).toLowerCase();
+    const { category } = req.query;
+    let items;
 
-    let sql =
-      "SELECT id, title, description, category, location, `date`, contact, status FROM items";
-    const params = [];
-
-    if (category === "lost" || category === "found") {
-      sql += " WHERE category = ?";
-      params.push(category);
+    if (category) {
+      items = db
+        .prepare("SELECT * FROM items WHERE LOWER(category) = LOWER(?) ORDER BY id DESC")
+        .all(category);
+    } else {
+      items = db.prepare("SELECT * FROM items ORDER BY id DESC").all();
     }
 
-    sql += " ORDER BY id DESC";
-
-    const [rows] = await db.query(sql, params);
-    return res.json(rows);
-  } catch (err) {
-    console.error("❌ getItems error:", err);
-    return res.status(500).json({ message: "Server error" });
+    res.json(items);
+  } catch (error) {
+    console.error("getItems error:", error);
+    res.status(500).json({ message: "Server error while fetching items" });
   }
 };
 
-exports.getItemById = async (req, res) => {
+// Get one item by ID
+exports.getItemById = (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
 
-    const sql =
-      "SELECT id, title, description, category, location, `date`, contact, status FROM items WHERE id = ?";
+    const item = db.prepare("SELECT * FROM items WHERE id = ?").get(id);
 
-    const [rows] = await db.query(sql, [id]);
-
-    if (!rows || rows.length === 0) {
+    if (!item) {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    return res.json(rows[0]);
-  } catch (err) {
-    console.error("❌ getItemById error:", err);
-    return res.status(500).json({ message: "Server error" });
+    res.json(item);
+  } catch (error) {
+    console.error("getItemById error:", error);
+    res.status(500).json({ message: "Server error while fetching item" });
   }
 };
 
-exports.updateStatus = async (req, res) => {
+// Update item status
+exports.updateStatus = (req, res) => {
   try {
-    const id = req.params.id;
-    const status = clean(req.body.status);
+    const { id } = req.params;
+    const { status } = req.body;
 
-    if (!status) return res.status(400).json({ message: "Status is required." });
-
-    const allowed = ["Active", "Claimed", "Resolved"];
-    if (!allowed.includes(status)) {
-      return res
-        .status(400)
-        .json({ message: "Status must be Active, Claimed, or Resolved." });
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
     }
 
-    const [result] = await db.query("UPDATE items SET status = ? WHERE id = ?", [
-      status,
-      id,
-    ]);
+    const stmt = db.prepare("UPDATE items SET status = ? WHERE id = ?");
+    const result = stmt.run(status, id);
 
-    if (result.affectedRows === 0) {
+    if (result.changes === 0) {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    return res.json({ message: "Status updated ✅" });
-  } catch (err) {
-    console.error("❌ updateStatus error:", err);
-    return res.status(500).json({ message: "Server error" });
+    res.json({
+      success: true,
+      message: "Status updated successfully ✅",
+    });
+  } catch (error) {
+    console.error("updateStatus error:", error);
+    res.status(500).json({ message: "Server error while updating status" });
   }
 };
 
-exports.deleteItem = async (req, res) => {
+// Delete item
+exports.deleteItem = (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
 
-    const [result] = await db.query("DELETE FROM items WHERE id = ?", [id]);
+    const stmt = db.prepare("DELETE FROM items WHERE id = ?");
+    const result = stmt.run(id);
 
-    if (result.affectedRows === 0) {
+    if (result.changes === 0) {
       return res.status(404).json({ message: "Item not found" });
     }
 
-    return res.json({ message: "Deleted ✅" });
-  } catch (err) {
-    console.error("❌ deleteItem error:", err);
-    return res.status(500).json({ message: "Server error" });
+    res.json({
+      success: true,
+      message: "Item deleted successfully ✅",
+    });
+  } catch (error) {
+    console.error("deleteItem error:", error);
+    res.status(500).json({ message: "Server error while deleting item" });
   }
 };
