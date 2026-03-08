@@ -36,3 +36,4 @@ Update project documentation
 - Parameterized queries (SQL Injection protection)
 - Basic XSS prevention (escape output)
 - `.env` for secrets 
+System updated with improved CRUD functionality

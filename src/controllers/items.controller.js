@@ -122,4 +122,3 @@ exports.deleteItem = (req, res) => {
     res.status(500).json({ message: "Server error while deleting item" });
   }
 };
-// improved validation logic
