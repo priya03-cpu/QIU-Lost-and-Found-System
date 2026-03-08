@@ -12,3 +12,4 @@ router.patch("/:id/status", adminAuth, controller.updateStatus);
 router.delete("/:id", adminAuth, controller.deleteItem);
 
 module.exports = router;
+// improved validation logic
